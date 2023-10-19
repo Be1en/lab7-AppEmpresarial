@@ -1,0 +1,35 @@
+{% extends "layout.html" %}
+{% block eventos %}
+            <a href="{% url 'lista_eventos' %}" class="list-group-item">Lista de Eventos</a>
+            <a href="{% url 'lista_usuarios' %}" class="list-group-item">Lista de Usuarios</a>
+            <a href="{% url 'lista_registros_evento' %}" class="list-group-item">Lista de Registros</a>
+            <a href="{% url 'crear_evento' %}" class="list-group-item">Crear Evento</a>
+            <a href="{% url 'crear_usuario' %}" class="list-group-item">Crear Usuario</a>
+            <a href="{% url 'crear_registro_evento' %}" class="list-group-item">Crear Registro de Evento</a>
+           
+{% endblock %}
+{% block content %}
+<body>
+  <div class="container mt-5">
+    <h2>Crear Usuario</h2>
+    <form method="post">
+      {% csrf_token %}
+      <!-- Agrega la clase 'form-group' a cada campo del formulario para usar Bootstrap -->
+      <div class="form-group">
+        {{ form.nombre.label_tag }}
+        {{ form.nombre }}
+      </div>
+      <div class="form-group">
+        {{ form.email.label_tag }}
+        {{ form.email }}
+      </div>
+      <!-- Usa la clase 'btn btn-primary' para el botón de enviar del formulario -->
+      <button type="submit" class="btn btn-primary">Crear Usuario</button>
+    </form>
+  </div>
+
+  <!-- Agrega el enlace al archivo JS de Bootstrap (opcional, dependiendo de tus necesidades) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+
+{% endblock %}

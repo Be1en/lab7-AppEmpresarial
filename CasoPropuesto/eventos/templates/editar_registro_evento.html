@@ -1,0 +1,25 @@
+{% extends "layout.html" %}
+
+{% block content %}
+
+  <body>
+    <div class="container mt-5">
+      <h2>Editar Registro a Evento</h2>
+      <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+          {{ form.evento.label_tag }}
+          {{ form.evento }}
+        </div>
+        <div class="form-group">
+          {{ form.usuario.label_tag }}
+          {{ form.usuario }}
+        </div>
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+        <a href="{% url 'lista_registros_evento' %}" class="btn btn-secondary">Cancelar</a>
+      </form>
+    </div>
+  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+{% endblock %}

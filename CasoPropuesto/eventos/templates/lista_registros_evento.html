@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+
+{% block eventos %}
+            <a href="{% url 'lista_eventos' %}" class="list-group-item">Lista de Eventos</a>
+            <a href="{% url 'lista_usuarios' %}" class="list-group-item">Lista de Usuarios</a>
+            <a href="{% url 'lista_registros_evento' %}" class="list-group-item">Lista de Registros</a>
+            <a href="{% url 'crear_evento' %}" class="list-group-item">Crear Evento</a>
+            <a href="{% url 'crear_usuario' %}" class="list-group-item">Crear Usuario</a>
+            <a href="{% url 'crear_registro_evento' %}" class="list-group-item">Crear Registro de Evento</a>
+           
+{% endblock %}
+
+{% block content %}
+<h2 class="m-4">Lista de Registros</h2>
+    <!-- Formulario para seleccionar un usuario -->
+    <form method="GET" action="{% url 'lista_registros_evento' %}">
+        <div class="form-group">
+            <label for="usuario_id">Selecciona un Usuario:</label>
+            <select name="usuario_id" class="form-control" id="usuario_id">
+                <option value="">Todos los Usuarios</option>
+                {% for usuario in usuarios %}
+                    <option value="{{ usuario.id }}" {% if usuario.id == selected_usuario_id %}selected{% endif %}>{{ usuario.nombre }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary mb-3">Filtrar</button>
+    </form>
+    <div class="row m-4">
+        {% for registro in registros_evento %}
+        <div class="col-lg-4 col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-body">
+                    <h4 class="card-title">
+                    <a href="{% url 'detalle_evento' registro.evento.id %}">Evento: {{ registro.evento.evento }}</a></h4>
+                    <h5 class="card-text">{{ registro.usuario.nombre }}</h5>
+                    <p class="card-text">Descripción del evento: {{ registro.evento.descripcion }}</p>
+                    <a href="{% url 'editar_registro_evento' registro.id %}" class="btn btn-primary btn-sm">Editar</a>
+                    <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminarRegistroEventoModal{{ registro.id }}">
+                        Eliminar
+                    </button>
+                    
+                <!-- Modal de confirmación de eliminación -->
+                <div class="modal fade" id="eliminarRegistroEventoModal{{ registro.id }}" tabindex="-1" role="dialog" aria-labelledby="eliminarRegistroEventoModal{{ usuario.id }}" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="eliminarRegistroEventoModal{{ usuario.id }}">Confirmar Eliminación</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                ¿Estás seguro de que quieres eliminar este registro?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                
+                                <!-- Enlace para eliminar usuario -->
+                                <a href="{% url 'eliminar_registro_evento' registro.id %}" class="btn btn-danger">Eliminar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                </div>
+                
+
+            </div>
+        </div>
+        {% empty %}
+        <div class="col-12">
+            <div class="alert alert-info" role="alert">
+                No hay registros de eventos disponibles.
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+{% endblock %}

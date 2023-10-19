@@ -1,0 +1,85 @@
+{% extends "layout.html" %}
+{% block eventos %}
+            <a href="{% url 'lista_eventos' %}" class="list-group-item">Lista de Eventos</a>
+            <a href="{% url 'lista_usuarios' %}" class="list-group-item">Lista de Usuarios</a>
+            <a href="{% url 'lista_registros_evento' %}" class="list-group-item">Lista de Registros</a>
+            <a href="{% url 'crear_evento' %}" class="list-group-item">Crear Evento</a>
+            <a href="{% url 'crear_usuario' %}" class="list-group-item">Crear Usuario</a>
+            <a href="{% url 'crear_registro_evento' %}" class="list-group-item">Crear Registro de Evento</a>
+           
+{% endblock %}
+{% block content %}
+{% load static %}
+<body>
+    <div class="container mt-5 card bg-light shadow-lg">
+        <div class="card-header bg-dark text-white">
+            <h2 class="card-title m-2">Detalles de el evento '{{ evento.evento }}'</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+
+                <div class="col-md-6">
+                    <h4 class="card-subtitle mb-2">Nombre del Evento</h4>
+                    <p class="card-text">{{ evento.evento }}</p>
+
+                    <h4 class="card-subtitle mb-2">Descripción</h4>
+                    <p class="card-text">{{ evento.descripcion }}</p>
+    
+                    <h4 class="card-subtitle mb-2">Fecha del Evento</h4>
+                    <p class="card-text">{{ evento.fecha }}</p>
+
+                    <a href="{% url 'editar_evento' evento.id %}" class="btn btn-primary btn-sm">Editar</a>
+                    <a href="{% url 'eliminar_evento' evento.id %}" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#eliminarEventoModal{{ evento.id }}">
+                        Eliminar
+                    </a>
+
+                    <!-- Modal de confirmación de eliminación de evento -->
+                    <div class="modal fade" id="eliminarEventoModal{{ evento.id }}" tabindex="-1" role="dialog" aria-labelledby="eliminarEventoModalLabel{{ evento.id }}" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="eliminarEventoModalLabel{{ evento.id }}">Confirmar Eliminación</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    ¿Estás seguro de que quieres eliminar este evento?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                                    
+                                    <!-- Enlace para eliminar evento -->
+                                    <a href="{% url 'eliminar_evento' evento.id %}" class="btn btn-danger">Eliminar</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+    
+                </div>
+                <div class="col-md-6">
+                    <h2>Registros:</h2>
+                    <ul>
+                    {% for registro in registros %}
+                      <li>{{ registro.usuario.nombre }}</li>
+                    {% empty %}
+                      <li>No hay registros para este evento.</li>
+                    {% endfor %}
+                    </ul>    
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+
+    <script src="{% static 'vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+    <script src="{% static 'vendor/jquery/jquery.min.js' %}"></script>
+
+</body>
+</html>
+
+{% endblock %}

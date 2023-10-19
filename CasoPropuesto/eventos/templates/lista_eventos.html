@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+{% block eventos %}
+            <a href="{% url 'lista_eventos' %}" class="list-group-item">Lista de Eventos</a>
+            <a href="{% url 'lista_usuarios' %}" class="list-group-item">Lista de Usuarios</a>
+            <a href="{% url 'lista_registros_evento' %}" class="list-group-item">Lista de Registros</a>
+            <a href="{% url 'crear_evento' %}" class="list-group-item">Crear Evento</a>
+            <a href="{% url 'crear_usuario' %}" class="list-group-item">Crear Usuario</a>
+            <a href="{% url 'crear_registro_evento' %}" class="list-group-item">Crear Registro de Evento</a>
+           
+{% endblock %}
+{% block content %}
+<div class="row m-4">
+    <div class="col">
+        <form method="get" action="{% url 'lista_eventos' %}">
+            <div class="form-row">
+                <div class="col">
+                    <label for="mes">Mes:</label>
+                    <select class="form-control" name="mes" id="mes">
+                        <option value="1" {% if selected_month == '1' %}selected{% endif %}>Enero</option>
+                        <option value="2" {% if selected_month == '2' %}selected{% endif %}>Febrero</option>
+                        <option value="3" {% if selected_month == '3' %}selected{% endif %}>Marzo</option>
+                        <option value="4" {% if selected_month == '4' %}selected{% endif %}>Abril</option>
+                        <option value="5" {% if selected_month == '5' %}selected{% endif %}>Mayo</option>
+                        <option value="6" {% if selected_month == '6' %}selected{% endif %}>Junio</option>
+                        <option value="7" {% if selected_month == '7' %}selected{% endif %}>Julio</option>
+                        <option value="8" {% if selected_month == '8' %}selected{% endif %}>Agosto</option>
+                        <option value="9" {% if selected_month == '9' %}selected{% endif %}>Septiembre</option>
+                        <option value="10" {% if selected_month == '10' %}selected{% endif %}>Octubre</option>
+                        <option value="11" {% if selected_month == '11' %}selected{% endif %}>Noviembre</option>
+                        <option value="12" {% if selected_month == '12' %}selected{% endif %}>Diciembre</option>
+                    </select>
+                </div>
+                <div class="col">
+                    <label for="anio">Año:</label>
+                    <select class="form-control" name="anio" id="anio" required>
+                        {% for year in years %}
+                            <option value="{{ year|date:'Y' }}" {% if selected_year == year|date:'Y' %}selected{% endif %}>{{ year|date:'Y' }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-primary mt-4">Buscar</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+  <div class="row">
+    {% for evento_info in eventos_con_usuarios %}
+    <div class="col-lg-4 col-md-6 mt-4">
+        <div class="card h-100">
+            <a href="{% url 'detalle_evento' evento_info.evento.id %}">
+                <img class="card-img-top" src="http://placehold.it/700x400" alt="">
+            </a>
+            <div class="card-body">
+                <h4 class="card-title">
+                    <a href="{% url 'detalle_evento' evento_info.evento.id %}">{{ evento_info.evento.evento }}</a>
+                </h4>
+                <h5>{{ evento_info.evento.fecha }}</h5>
+                <p class="card-text"> Descripción: {{ evento_info.evento.descripcion }}
+                </p>
+                <p class="card-text">Usuarios Registrados: {{ evento_info.cantidad_usuarios }}</p>
+            </div>
+            <div class="card-footer">
+                <small class="text-muted">&#9733; &#9733; &#9733; &#9733; &#9734;</small>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+  </div>
+{% endblock %}
